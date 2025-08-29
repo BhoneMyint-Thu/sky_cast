@@ -10,16 +10,20 @@ class CurrentWeatherNotifier extends AutoDisposeNotifier<WeatherDetailState> {
   }
 
   Future<void> getCurrentWeather({required WeatherParam query}) async {
-    state = CurrentWeatherLoading();
-    final result = await _getWeatherUseCase.call(query: query);
-    result.fold(
-      (error) {
-        state = CurrentWeatherError(error);
-      },
-      (weather) {
-        state = CurrentWeatherLoaded(weather);
-      },
-    );
+    try {
+      state = CurrentWeatherLoading();
+      final result = await _getWeatherUseCase.call(query: query);
+      result.fold(
+        (error) {
+          state = CurrentWeatherError(error);
+        },
+        (weather) {
+          state = CurrentWeatherLoaded(weather);
+        },
+      );
+    } catch (_) {
+      state = CurrentWeatherError(ErrorWrapper.somethingWentWrong());
+    }
   }
 }
 
@@ -33,15 +37,19 @@ class ForecastWeatherNotifier extends AutoDisposeNotifier<WeatherDetailState> {
   }
 
   Future<void> getForecastWeather({required WeatherParam query}) async {
-    state = ForecastWeatherLoading();
-    final result = await _getWeatherUseCase.call(query: query);
-    result.fold(
-      (error) {
-        state = ForecastWeatherError(error);
-      },
-      (weather) {
-        state = ForecastWeatherLoaded(weather);
-      },
-    );
+    try {
+      state = ForecastWeatherLoading();
+      final result = await _getWeatherUseCase.call(query: query);
+      result.fold(
+        (error) {
+          state = ForecastWeatherError(error);
+        },
+        (weather) {
+          state = ForecastWeatherLoaded(weather);
+        },
+      );
+    } catch (_) {
+      state = ForecastWeatherError(ErrorWrapper.somethingWentWrong());
+    }
   }
 }

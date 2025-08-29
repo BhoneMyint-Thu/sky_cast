@@ -10,15 +10,19 @@ class WeatherNotifier extends AutoDisposeNotifier<HomeState> {
   }
 
   Future<void> getCurrentWeather({required WeatherParam query}) async {
-    state = CurrentWeatherLoading();
-    final result = await _getWeatherUseCase.call(query: query);
-    result.fold(
-      (error) {
-        state = CurrentWeatherError(error);
-      },
-      (weather) {
-        state = CurrentWeatherLoaded(weather);
-      },
-    );
+    try {
+      state = CurrentWeatherLoading();
+      final result = await _getWeatherUseCase.call(query: query);
+      result.fold(
+        (error) {
+          state = CurrentWeatherError(error);
+        },
+        (weather) {
+          state = CurrentWeatherLoaded(weather);
+        },
+      );
+    } catch (_) {
+      state = CurrentWeatherError(ErrorWrapper.somethingWentWrong());
+    }
   }
 }

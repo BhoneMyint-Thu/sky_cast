@@ -15,7 +15,6 @@ class UrlUtil {
     }
 
     final url = "${ApiConstants.weatherIconBase}$icon$suffix.png";
-    print("url==>$url");
     return url;
   }
 }

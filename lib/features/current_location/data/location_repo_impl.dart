@@ -25,7 +25,7 @@ class LocationRepositoryImpl implements LocationRepository {
 
     // Get position
     final pos = await Geolocator.getCurrentPosition(
-      locationSettings: const LocationSettings(accuracy: LocationAccuracy.medium),
+      locationSettings: const LocationSettings(accuracy: LocationAccuracy.best),
     );
 
     return Right(
